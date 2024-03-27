@@ -1,18 +1,18 @@
-"""Первый подходящий с упорядочиванием (FFD)"""\
+"""Первый подходящий с упорядочиванием (FFD)"""
 
 """Факторы:
 1. Размерность(число предметов)
-2. Cредние
-3. Объем контейнера
-4. Дисперсия"""
+2. Доля средних
+3. Вместимость контейнера
+4. Длина интервала"""
 
 import random
 
 
 N = [100, 200, 500, 1000, 10000] #кол-во предметов
 capacities = [100, 200, 300, 500, 1000]  #объем контейнеров
-means = [25,50,75,100,150] #средние значения
-vars = [20, 30, 40, 55, 70] #дисперсии
+means = [25, 50, 75, 100, 150] #мат ожидания
+vars = [15,20, 25, 33, 40] #дисперсии
 
 def first_sort_fit(capacity, weights):
     containers = [0] #список контейнеров. Один контейнер будет хранить сумму весов предметов, положенных в него
@@ -27,11 +27,17 @@ def first_sort_fit(capacity, weights):
 
     return containers
 
-def calc(C,N,var,average):
-    list = [random.normalvariate(average, var) for _ in range(N)]#генерируем список весов
-    sorted_list = sorted(list, reverse=True)#сортируем список весов
-    result = first_sort_fit(C, sorted_list)
+
+
+def calc(capacity, n, var, mean):
+    std = int(var ** 0.5)
+    weights = [random.normalvariate(mean, std) for _ in range(n)]
+    weights.sort(reverse=True)
+    result = first_sort_fit(capacity, weights)
+
     return result
+
+
 
 count = 1
 for n in N:
