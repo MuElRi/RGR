@@ -4,15 +4,15 @@
 1. Размерность(число предметов)
 2. Мат ожидание 
 3. Вместимость контейнера
-4. Дисперсия"""
+4. Длина интервалов"""
 
 import random
 
 
 N = [100, 200, 500, 1000, 10000] #кол-во предметов
-capacities = [100, 200, 300, 500, 1000]  #объем контейнеров
+capacities = [35, 55, 80, 100, 150]  #объем контейнеров
 means = [25, 50, 75, 100, 150] #мат ожидания
-vars = [15,20, 25, 33, 40] #дисперсии
+intervals_length = [15,20, 25, 33, 40] #длина интервала
 
 def first_sort_fit(capacity, weights):
     containers = [0] #список контейнеров. Один контейнер будет хранить сумму весов предметов, положенных в него
@@ -29,8 +29,8 @@ def first_sort_fit(capacity, weights):
 
 
 
-def calc(capacity, n, var, mean):
-    std = int(var ** 0.5)
+def calc(capacity, n, length , mean):
+    std = (length / 2) ** 0.5#стандартное отклонение
     weights = [random.normalvariate(mean, std) for _ in range(n)]
     weights.sort(reverse=True)
     result = first_sort_fit(capacity, weights)
@@ -38,19 +38,15 @@ def calc(capacity, n, var, mean):
     return result
 
 
-
-count = 1
 for n in N:
     for c in capacities:
-        for var in vars:
+        for length in intervals_length:
             for mean in means:
-                print(f"\nЭксперимент №{count}")
-                result = calc(c, n, var, mean)
-                str = (f"X1 Количество предметов: {n}\n"
-                       f"X2 Средний вес предмета: {mean}\n"
-                       f"X3 Дисперсия: {var}\n"
-                       f"X4 Объем контейнера: {c}\n"
+                result = calc(c, n, length, mean)
+                str = (f"X1 Размерность (количество предметов): {n}\n"
+                       f"X2 Мат. ожидание: {mean}\n"
+                       f"X3 Вместимость контейнера: {c}\n"
+                       f"X4 Длина интервала: {length}\n"
                        f"Итоговое количество контейнеров:{len(result)}\n")
                 print(str)
-                count+=1
 
